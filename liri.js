@@ -8,6 +8,14 @@ var axios = require("axios");
 
 var bandsInTown = new bandsInTown(keys.bandsInTown)
 
+var input = "";
+for (i = 3; i < process.argv.length; i++){
+    input += process.argv[i]
+}
+// for (i = 0; i < input.length; i++){
+//     input = input.replace(" ", "%20")
+// }
+console.log(input);
 
 if (process.argv[2] === "concert-this") {
     queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=" + bandsInTown.key;
