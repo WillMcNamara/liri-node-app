@@ -1,24 +1,26 @@
 //allows code to read and set any environment variable
 require("dotenv").config();
+
 //imports keys.js and stores it in variable
 var keys = require("./keys.js");
-
 var axios = require("axios");
+var Spotify = require("node-spotify-api");
 
 //accessing keys from keys.js and .env
 var bandsInTown = keys.bandsInTown.key;
 var OMDB = keys.OMDB.key;
-var spotifyID = keys.spotify.id;
-var spotifySecret = keys.spotify.secret;
+var spotify = new Spotify({
+    id: keys.spotify.id,
+    secret: keys.spotify.secret
+})
 
 //taking search input
 var input = "";
 for (i = 3; i < process.argv.length; i++){
     input += process.argv[i];
     if (i !== process.argv.length - 1){
-    input += "%20";
+    input += " ";
     }
-    console.log(input);
 }
 
 //concert search option
@@ -33,6 +35,17 @@ if (process.argv[2] === "concert-this") {
 
 //spotify search option
 if (process.argv[2] === "spotify-this-song") {
+    spotify.search({type: "track", query: input, limit: 1})
+        .then(function(response) {
+            var data = response.tracks.items[0];
+            console.log("Artist: " + data.artists[0].name);
+            console.log("Song name: " + data.name);
+            console.log("Preview link : " + data.preview_url);
+            console.log("Album: " + data.album.name);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 }
 
 //movie search option
