@@ -20,9 +20,12 @@ for (i = 3; i < process.argv.length; i++){
 
 
 if (process.argv[2] === "concert-this") {
-    queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=" + bandsInTown.key;
-
-    axios.get(queryUrl)
+    var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
+    axios.get(queryUrl).then(function(res){
+        console.log(res.data[1].venue.name);
+        console.log(res.data[1].venue.city + ", " + res.data[1].venue.country);
+        console.log(res.data[1].datetime);
+    })
 }
 
 if (process.argv[2] === "spotify-this-song") {
