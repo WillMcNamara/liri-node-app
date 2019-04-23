@@ -2,13 +2,16 @@
 require("dotenv").config();
 //imports keys.js and stores it in variable
 var keys = require("./keys.js");
-//keys can be accessed like: var spotify = new Spotify(keys.spotify);
 
 var axios = require("axios");
 
+//accessing keys from keys.js and .env
 var bandsInTown = keys.bandsInTown.key;
 var OMDB = keys.OMDB.key;
+var spotifyID = keys.spotify.id;
+var spotifySecret = keys.spotify.secret;
 
+//taking search input
 var input = "";
 for (i = 3; i < process.argv.length; i++){
     input += process.argv[i];
@@ -18,7 +21,7 @@ for (i = 3; i < process.argv.length; i++){
     console.log(input);
 }
 
-
+//concert search option
 if (process.argv[2] === "concert-this") {
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
     axios.get(queryUrl).then(function(res){
@@ -28,9 +31,11 @@ if (process.argv[2] === "concert-this") {
     })
 }
 
+//spotify search option
 if (process.argv[2] === "spotify-this-song") {
 }
 
+//movie search option
 if (process.argv[2] === "movie-this") {
     var queryUrl = "https://www.omdbapi.com/?t=" + input + "&apikey=" + OMDB;
     axios.get(queryUrl).then(function(res){
@@ -45,6 +50,7 @@ if (process.argv[2] === "movie-this") {
     })
 }
 
+//other thing
 if (process.argv[2] === "do-what-it-says") {
 }
 
