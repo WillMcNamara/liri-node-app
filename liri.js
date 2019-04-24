@@ -98,7 +98,7 @@ function movieThis(input){
             "Plot: " + s.Plot,
         ].join("\n\n")
         console.log(movieInfo);
-        fs.appendFile("log.txt", showData + divider, function(err) {
+        fs.appendFile("log.txt", movieInfo + divider, function(err) {
             if (err) throw err;
         })
     })
