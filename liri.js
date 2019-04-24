@@ -24,6 +24,7 @@ for (i = 3; i < process.argv.length; i++){
     }
 }
 
+var divider = "\n------------------------------------------------------------\n\n";
 
 function concertThis(input){
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
@@ -37,6 +38,9 @@ function concertThis(input){
             "Time: " + s.datetime,
         ].join("\n\n")
         console.log(concertInfo);
+        fs.appendFile("log.txt", concertInfo + divider, function(err) {
+            if (err) throw err;
+        })
     })
 }
 
@@ -65,6 +69,9 @@ function spotifyThis(input){
                 "Album: " + data.album.name,
             ].join("\n\n")
             console.log(songInfo);
+            fs.appendFile("log.txt", songInfo + divider, function(err) {
+                if (err) throw err;
+            })
         })
         .catch(function(err) {
             console.log(err);
@@ -91,7 +98,10 @@ function movieThis(input){
             "Plot: " + s.Plot,
         ].join("\n\n")
         console.log(movieInfo);
+        fs.appendFile("log.txt", showData + divider, function(err) {
+            if (err) throw err;
         })
+    })
 }
 
 //decide what function to run
