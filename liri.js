@@ -6,6 +6,7 @@ var keys = require("./keys.js");
 var axios = require("axios");
 var Spotify = require("node-spotify-api");
 var fs = require("fs");
+var moment = require("moment");
 
 //accessing keys from keys.js and .env
 var bandsInTown = keys.bandsInTown.key;
@@ -30,12 +31,12 @@ function concertThis(input){
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
     axios.get(queryUrl).then(function(res){
         var s = res.data[1];
-        
+        time = moment(s.datetime, "YYYY-MM-DDTh:mm:ss").format("MM/DD/YYYY");
         //formatting string to display
         var concertInfo = [
             "\nVenue: " + s.venue.name,
             "Location: " + s.venue.city + ", " + s.venue.country,
-            "Time: " + s.datetime,
+            "Date: " + time,
         ].join("\n\n")
         console.log(concertInfo);
         fs.appendFile("log.txt", concertInfo + divider, function(err) {
