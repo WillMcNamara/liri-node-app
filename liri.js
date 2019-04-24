@@ -24,6 +24,7 @@ for (i = 3; i < process.argv.length; i++){
     }
 }
 
+
 function concertThis(input){
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
     axios.get(queryUrl).then(function(res){
@@ -40,6 +41,9 @@ function concertThis(input){
 }
 
 function spotifyThis(input){
+    if (input === ""){
+        input = "The Sign"
+    }
     spotify.search({type: "track", query: input, limit: 1})
         .then(function(response) {
             var data = response.tracks.items[0];
@@ -68,6 +72,9 @@ function spotifyThis(input){
 }
 
 function movieThis(input){
+    if (input === ""){
+        input = "Mr. Nobody"
+    }
     var queryUrl = "https://www.omdbapi.com/?t=" + input + "&apikey=" + OMDB;
         axios.get(queryUrl).then(function(res){
         var s = res.data
