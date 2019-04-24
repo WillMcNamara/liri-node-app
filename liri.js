@@ -27,9 +27,15 @@ for (i = 3; i < process.argv.length; i++){
 function concertThis(input){
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=" + bandsInTown.key;
     axios.get(queryUrl).then(function(res){
-        console.log(res.data[1].venue.name);
-        console.log(res.data[1].venue.city + ", " + res.data[1].venue.country);
-        console.log(res.data[1].datetime);
+        var s = res.data[1];
+        
+        //formatting string to display
+        var concertInfo = [
+            "\nVenue: " + s.venue.name,
+            "Location: " + s.venue.city + ", " + s.venue.country,
+            "Time: " + s.datetime,
+        ].join("\n\n")
+        console.log(concertInfo);
     })
 }
 
@@ -37,10 +43,24 @@ function spotifyThis(input){
     spotify.search({type: "track", query: input, limit: 1})
         .then(function(response) {
             var data = response.tracks.items[0];
-            console.log("Artist: " + data.artists[0].name);
-            console.log("Song name: " + data.name);
-            console.log("Preview link : " + data.preview_url);
-            console.log("Album: " + data.album.name);
+            
+            //take artists from json object and format them if more than one
+            var artists = "";
+            for (i = 0; i < data.artists.length; i++) {
+                artists += data.artists[i].name
+                if (i < data.artists.length - 1){
+                    artists += ", ";
+                }
+            };
+            
+            //formatting string to display
+            var songInfo = [
+                "\nArtists: " + artists,
+                "Song name: " + data.name,
+                "Preview link : " + data.preview_url,
+                "Album: " + data.album.name,
+            ].join("\n\n")
+            console.log(songInfo);
         })
         .catch(function(err) {
             console.log(err);
@@ -50,18 +70,26 @@ function spotifyThis(input){
 function movieThis(input){
     var queryUrl = "https://www.omdbapi.com/?t=" + input + "&apikey=" + OMDB;
         axios.get(queryUrl).then(function(res){
-            console.log("Title: " + res.data.Title);
-            console.log("Year: " + res.data.Year);
-            console.log("IMDB: " + res.data.imdbRating);
-            console.log("Metascore: " + res.data.Metascore);
-            console.log("Country: " + res.data.Country);
-            console.log("Language: " + res.data.Language);
-            console.log("Plot: " + res.data.Plot);
-            console.log("Actors: " + res.data.Actors);
+        var s = res.data
+
+        //formatting string to display
+        var movieInfo = [    
+            "\nTitle: " + s.Title,
+            "Year: " + s.Year,
+            "IMDB: " + s.imdbRating,
+            "Metascore: " + s.Metascore,
+            "Country: " + s.Country,
+            "Language: " + s.Language,
+            "Actors: " + s.Actors,
+            "Plot: " + s.Plot,
+        ].join("\n\n")
+        console.log(movieInfo);
         })
 }
 
+//decide what function to run
 function checkTerm(search, input){
+    
     //concert search option
     if (search === "concert-this") {
         concertThis(input);
@@ -76,18 +104,22 @@ function checkTerm(search, input){
     if (search === "movie-this") {
         movieThis(input);
     }
-    //other thing
+    
+    //other useless thing
     if (search === "do-what-it-says") {
         fs.readFile("random.txt", "utf8", function(err, data){
             if (err) {
                 return console.log(err);
             }
             data = data.split(",");
+
+            //go through normal process with text content used for search and input
             checkTerm(data[0], data[1]);
         })
     }
 }
 
+//call functions
 checkTerm(process.argv[2], input);
 
 
