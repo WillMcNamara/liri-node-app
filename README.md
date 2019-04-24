@@ -23,20 +23,20 @@ After each equal sign fill in your own API key. These keys will be called by the
 
 ### concert-this:
 
-![concert](images/concert.png)
+![concert](images/concert.PNG)
 
 ### spotify-this-song:
 
-![spotify](images/spotify.png)
+![spotify](images/spotify.PNG)
 
 ### movie-this:
 
-![movie](images/movie.png)
+![movie](images/movie.PNG)
 
 ### read text file:
 
-![random](images/random.png)
+![random](images/random.PNG)
 
 ### log:
 
-![log](images/log.png)
+![log](images/log.PNG)
